@@ -12,10 +12,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 222, 222, 228),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("iSchedule - Login Page"),
-        backgroundColor: const Color.fromARGB(255, 25, 97, 156),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),
@@ -65,46 +64,22 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {},
               child: const Text(
                 'Forgot Password',
-                style: TextStyle(
-                    color: Color.fromARGB(255, 25, 97, 156), fontSize: 15),
+                style: TextStyle(color: Colors.blue, fontSize: 15),
               ),
             ),
             Container(
               height: 40,
               width: 180,
-              child: RaisedButton(
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+              child: FlatButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => RegisterPage()));
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(80.0)),
-                padding: const EdgeInsets.all(0.0),
-                child: Ink(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment(0.8, 1),
-                      colors: <Color>[
-                        Color.fromARGB(255, 6, 62, 109),
-                        Color.fromARGB(255, 41, 132, 206)
-                      ],
-                      tileMode: TileMode.mirror,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                  ),
-                  child: Container(
-                    constraints:
-                        const BoxConstraints(minWidth: 90.0, minHeight: 40.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 222, 222, 228),
-                          fontSize: 20),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
             ),
@@ -112,43 +87,21 @@ class _LoginPageState extends State<LoginPage> {
               height: 50,
             ),
             Container(
-                height: 40,
-                width: 180,
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => RegisterPage()));
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(80.0)),
-                  padding: const EdgeInsets.all(0.0),
-                  child: Ink(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment(0.8, 1),
-                        colors: <Color>[
-                          Color.fromARGB(255, 6, 62, 109),
-                          Color.fromARGB(255, 41, 132, 206)
-                        ],
-                        tileMode: TileMode.mirror,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                    ),
-                    child: Container(
-                      constraints:
-                          const BoxConstraints(minWidth: 90.0, minHeight: 40.0),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Register',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 222, 222, 228),
-                            fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                )),
+              height: 40,
+              width: 180,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => RegisterPage()));
+                },
+                child: const Text(
+                  'Create Account',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+            ),
           ],
         ),
       ),
