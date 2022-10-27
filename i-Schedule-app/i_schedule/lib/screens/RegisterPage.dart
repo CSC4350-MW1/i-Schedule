@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text("Home Page"),
+          title: const Text("Register Page"),
         ));
   }
 }

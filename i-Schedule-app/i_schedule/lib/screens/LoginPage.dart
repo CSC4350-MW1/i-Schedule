@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'HomePage.dart';
+import 'RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,28 +14,39 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Login Page"),
+        title: const Text("iSchedule - Login Page"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Center(
                 child: Container(
-                    width: 200,
-                    height: 150,
-                    child: Image.asset('assets/placeholderCalendar.jpg')),
+                  width: 300,
+                  height: 180,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/loginImage.png'),
+                        fit: BoxFit.fill,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                ),
               ),
             ),
             const Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: TextField(
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
-                    hintText: 'Enter valid email id (example@email.com)'),
+                    hintText: 'Enter email ID'),
               ),
             ),
             const Padding(
@@ -45,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
-                    hintText: 'Enter secure password'),
+                    hintText: 'Enter password'),
               ),
             ),
             FlatButton(
@@ -56,8 +68,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Container(
-              height: 50,
-              width: 200,
+              height: 40,
+              width: 180,
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: FlatButton(
@@ -67,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: const Text(
                   'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
             ),
@@ -75,18 +87,18 @@ class _LoginPageState extends State<LoginPage> {
               height: 50,
             ),
             Container(
-              height: 50,
-              width: 200,
+              height: 40,
+              width: 180,
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: FlatButton(
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => RegisterPage()));
                 },
                 child: const Text(
                   'Create Account',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
             ),
