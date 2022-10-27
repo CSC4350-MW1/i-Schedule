@@ -74,8 +74,8 @@ class _LoginPageState extends State<LoginPage> {
               width: 180,
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => RegisterPage()));
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => LoginPage()));
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(80.0)),
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                       begin: Alignment.topLeft,
                       end: Alignment(0.8, 1),
                       colors: <Color>[
-                        Color.fromARGB(255, 6, 62, 109),
+                        Color.fromARGB(255, 9, 73, 126),
                         Color.fromARGB(255, 41, 132, 206)
                       ],
                       tileMode: TileMode.mirror,
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                         begin: Alignment.topLeft,
                         end: Alignment(0.8, 1),
                         colors: <Color>[
-                          Color.fromARGB(255, 6, 62, 109),
+                          Color.fromARGB(255, 9, 73, 126),
                           Color.fromARGB(255, 41, 132, 206)
                         ],
                         tileMode: TileMode.mirror,
