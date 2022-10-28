@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => LoginPage()));
+                      context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(80.0)),
