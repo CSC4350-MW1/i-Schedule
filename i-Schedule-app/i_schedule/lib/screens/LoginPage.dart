@@ -14,7 +14,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 222, 222, 228),
       appBar: AppBar(
-        title: const Text("iSchedule - Login Page"),
+        title: const Text("iSchedule - Login"),
         backgroundColor: const Color.fromARGB(255, 25, 97, 156),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
