@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'MakeMeetingPage.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -11,7 +13,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 222, 222, 228),
       appBar: AppBar(
-        title: const Text("Home Page"),
+        title: const Text("iSchedule - Home"),
         backgroundColor: const Color.fromARGB(255, 25, 97, 156),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -27,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         // Should grab user's meetings from Firebase, currently just placeholder
         child: ListView.builder(
           padding: const EdgeInsets.all(10),
-          itemCount: 3,
+          itemCount: 5,
           itemBuilder: (BuildContext context, int index) {
             return RaisedButton(
                 onPressed: () {},
@@ -46,7 +48,10 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 25, 97, 156),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => MakeMeetingPage()));
+        },
         tooltip: 'Create new Meeting',
         child: const Icon(Icons.add),
       ),
