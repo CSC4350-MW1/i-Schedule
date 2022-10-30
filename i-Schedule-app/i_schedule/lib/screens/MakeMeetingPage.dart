@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'HomePage.dart';
+import 'JoinMeetingPage.dart';
 
 class MakeMeetingPage extends StatefulWidget {
   @override
@@ -160,9 +161,49 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
               ),
             ),
             const SizedBox(
-              height: 50,
+              height: 80,
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        alignment: Alignment.bottomCenter,
+        padding: const EdgeInsets.all(2.0),
+        height: 40,
+        width: 180,
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => JoinMeetingPage()));
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+          padding: const EdgeInsets.all(0.0),
+          child: Ink(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment(0.8, 1),
+                colors: <Color>[
+                  Color.fromARGB(255, 9, 73, 126),
+                  Color.fromARGB(255, 41, 132, 206)
+                ],
+                tileMode: TileMode.mirror,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            ),
+            child: Container(
+              constraints:
+                  const BoxConstraints(minWidth: 90.0, minHeight: 40.0),
+              alignment: Alignment.center,
+              child: const Text(
+                'Join a Meeting',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 222, 222, 228), fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
         ),
       ),
     );
