@@ -20,6 +20,24 @@ class _HomePageState extends State<HomePage> {
             bottom: Radius.circular(20),
           ),
         ),
+        actions: <Widget>[
+          Stack(children: [
+            IconButton(
+              padding: const EdgeInsets.all(15),
+              constraints: BoxConstraints(minWidth: 30, minHeight: 30),
+              icon: const Icon(Icons.notifications),
+              tooltip: 'Notifications',
+              color: const Color.fromARGB(255, 202, 202, 211),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      _buildNotificationsPopupDialog(context),
+                );
+              },
+            ),
+          ])
+        ],
       ),
       // Scrollable block of meetings involving user
       body: Container(
@@ -55,6 +73,54 @@ class _HomePageState extends State<HomePage> {
         tooltip: 'Create new Meeting',
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  Widget _buildNotificationsPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 222, 222, 228),
+      title: Text(
+        'Notifications',
+        style: new TextStyle(
+          fontWeight: FontWeight.bold,
+          color: const Color.fromARGB(255, 25, 97, 156),
+          fontSize: 16,
+        ),
+      ),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              color: const Color.fromARGB(255, 202, 202, 211),
+              onPressed: (() {}),
+              child: Text('Placeholder Meeting Invite')),
+          RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              color: const Color.fromARGB(255, 202, 202, 211),
+              onPressed: (() {}),
+              child: Text('Placeholder Organization Invite'))
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: Text(
+            'Close',
+            style: new TextStyle(
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(255, 25, 97, 156),
+              fontSize: 12,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
