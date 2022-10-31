@@ -23,6 +23,16 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
             bottom: Radius.circular(20),
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            tooltip: 'Return to Home Screen',
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => HomePage()));
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -161,7 +171,7 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
               ),
             ),
             const SizedBox(
-              height: 80,
+              height: 60,
             ),
           ],
         ),
