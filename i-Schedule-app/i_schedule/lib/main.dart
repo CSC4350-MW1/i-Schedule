@@ -22,7 +22,7 @@ Widget build(BuildContext context) {
   return MaterialApp(
     title: 'i-Schdule',
     theme: ThemeData(
-      primarySwatch: Colors.blue,
+      primarySwatch: Colors.blueGrey,
     ),
     home: LoginPage(),
   );

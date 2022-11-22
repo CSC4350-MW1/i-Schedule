@@ -24,6 +24,7 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
           ),
         ),
         actions: <Widget>[
+          // Home button (Top left, returns to home screen)
           IconButton(
             icon: const Icon(Icons.home),
             tooltip: 'Return to Home Screen',

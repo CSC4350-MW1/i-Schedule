@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:flutter/material.dart';
 
 import 'HomePage.dart';
@@ -9,6 +11,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   @override
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 222, 222, 228),
@@ -24,23 +28,25 @@ class _RegisterPageState extends State<RegisterPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                controller: emailController,
+                decoration: const InputDecoration(
+                    border: const OutlineInputBorder(),
                     labelText: 'Email',
                     hintText: 'Enter email ID'),
               ),
             ),
-            const Padding(
-              padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
+                controller: passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                decoration: const InputDecoration(
+                    border: const OutlineInputBorder(),
                     labelText: 'Password',
                     hintText: 'Enter password'),
               ),
