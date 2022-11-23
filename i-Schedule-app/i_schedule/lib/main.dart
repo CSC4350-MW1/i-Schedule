@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 import 'screens/LoginPage.dart';
 
 void main() async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+    apiKey: "AIzaSyDhz4nBw4Tn0hQy3V21ct_4uL3vRb4XiB4",
+    appId: "1:838849990624:android:04201a5f54050bce192585",
+    messagingSenderId: "iSchedule",
+    projectId: "ischedule-6976f",
+  ));
   runApp(iScheduleApp());
 }
 
