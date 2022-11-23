@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "838849990624",
+    "project_id": "ischedule-6976f",
+    "storage_bucket": "ischedule-6976f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838849990624:android:04201a5f54050bce192585",
+        "android_client_info": {
+          "package_name": "com.ddr.i_schedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838849990624-rg61glsc8o93he16iivvsvvhnupps92i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhz4nBw4Tn0hQy3V21ct_4uL3vRb4XiB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838849990624-rg61glsc8o93he16iivvsvvhnupps92i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
