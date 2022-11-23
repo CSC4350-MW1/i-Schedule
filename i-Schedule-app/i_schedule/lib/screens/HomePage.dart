@@ -103,12 +103,14 @@ class _HomePageState extends State<HomePage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               color: const Color.fromARGB(255, 202, 202, 211),
+              padding: const EdgeInsets.all(10),
               onPressed: (() {}),
               child: const Text('Placeholder Meeting Invite')),
           RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               color: const Color.fromARGB(255, 202, 202, 211),
+              padding: const EdgeInsets.all(10),
               onPressed: (() {}),
               child: const Text('Placeholder Organization Invite'))
         ],
