@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'HomePage.dart';
@@ -10,6 +11,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   @override
+  final FirebaseAuth _fireauth = FirebaseAuth.instance;
+  final _formKeyEmail = GlobalKey<FormState>();
+  final _formKeyPassword = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   Widget build(BuildContext context) {
@@ -45,8 +49,11 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: TextField(
+              child: TextFormField(
+                key: _formKeyEmail,
                 controller: emailController,
+                validator: (value) =>
+                    value!.isEmpty ? "Enter a valid email" : null,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
@@ -56,8 +63,11 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
-              child: TextField(
+              child: TextFormField(
+                key: _formKeyPassword,
                 controller: passwordController,
+                validator: (value) =>
+                    value!.isEmpty ? "Enter a valid password" : null,
                 obscureText: true,
                 decoration: const InputDecoration(
                     border: const OutlineInputBorder(),
@@ -77,7 +87,12 @@ class _LoginPageState extends State<LoginPage> {
               height: 40,
               width: 180,
               child: RaisedButton(
-                onPressed: () {
+                onPressed: () async {
+                  // if (_formKeyEmail.currentState!.validate() &&
+                  //     _formKeyPassword.currentState!.validate()) {}
+                  signIn();
+                  // emailController.dispose();
+                  // passwordController.dispose();
                   Navigator.push(
                       context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
@@ -157,5 +172,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  signIn() async {
+    await _fireauth.signInWithEmailAndPassword(
+        email: emailController.text, password: passwordController.text);
   }
 }

@@ -1,6 +1,8 @@
 // ignore_for_file: unnecessary_const
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:i_schedule/screens/LoginPage.dart';
 
 import 'HomePage.dart';
 
@@ -11,6 +13,10 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   @override
+  final FirebaseAuth _fireauth = FirebaseAuth.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  final _formKeyEmail = GlobalKey<FormState>();
+  final _formKeyPassword = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   Widget build(BuildContext context) {
@@ -31,8 +37,12 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: TextField(
+              child: TextFormField(
+                validator: (value) =>
+                    value!.isEmpty ? "Enter a valid email" : null,
+                key: _formKeyEmail,
                 controller: emailController,
+                //obscureText: true,
                 decoration: const InputDecoration(
                     border: const OutlineInputBorder(),
                     labelText: 'Email',
@@ -42,7 +52,10 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
-              child: TextField(
+              child: TextFormField(
+                validator: (value) =>
+                    value!.isEmpty ? "Enter a valid password" : null,
+                key: _formKeyPassword,
                 controller: passwordController,
                 obscureText: true,
                 decoration: const InputDecoration(
@@ -58,9 +71,34 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 40,
                 width: 180,
                 child: RaisedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => RegisterPage()));
+                  // Register Button On Pressed
+                  onPressed: () async {
+                    if (emailController.text.isNotEmpty &&
+                        passwordController.text.isNotEmpty) {
+                      // Create new user in FireAuth
+                      final User? newUser =
+                          (await _fireauth.createUserWithEmailAndPassword(
+                                  email: emailController.text,
+                                  password: passwordController.text))
+                              .user;
+                      // Sign into FireAuth
+                      (await _fireauth.signInWithEmailAndPassword(
+                          email: emailController.text,
+                          password: passwordController.text));
+                      db
+                          .collection("users")
+                          .doc(emailController.text)
+                          .set(<String, dynamic>{
+                        "email": emailController.text,
+                        "password": passwordController.text,
+                        "authID": newUser?.uid.toString(),
+                      });
+                      // emailController.dispose();
+                      // passwordController.dispose();
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => HomePage()));
+                    }
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(80.0)),

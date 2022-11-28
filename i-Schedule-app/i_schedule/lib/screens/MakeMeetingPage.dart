@@ -1,7 +1,12 @@
+// ignore_for_file: deprecated_member_use, unused_local_variable, use_build_context_synchronously
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import 'HomePage.dart';
 import 'JoinMeetingPage.dart';
+import 'package:i_schedule/services/fireserv.dart';
 
 class MakeMeetingPage extends StatefulWidget {
   @override
@@ -10,9 +15,18 @@ class MakeMeetingPage extends StatefulWidget {
 
 class _MakeMeetingState extends State<MakeMeetingPage> {
   @override
+  final FirebaseAuth _fireauth = FirebaseAuth.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
   DateTime date = DateTime.now();
   TimeOfDay time = TimeOfDay.now();
+  final titleController = TextEditingController();
+  final membersController = TextEditingController();
+  late DateTime inputDate;
+  late TimeOfDay inputTime;
+
+  //Future<dynamic>? inputTime;
   Widget build(BuildContext context) {
+    var userRef = db.collection("users").doc(_fireauth.currentUser!.email);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 222, 222, 228),
       appBar: AppBar(
@@ -38,29 +52,38 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: TextField(
-                decoration: InputDecoration(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: TextFormField(
+                controller: titleController,
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Meeting Title',
                     hintText: 'Enter meeting title'),
               ),
             ),
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-              child: TextField(
-                decoration: InputDecoration(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+              child: TextFormField(
+                controller: membersController,
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Members',
-                    hintText: 'Enter member email or username'),
+                    hintText: 'Enter member email'),
               ),
             ),
-            const SizedBox(
+            Container(
               height: 10,
+              child: Text(
+                membersController.text,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 222, 222, 228), fontSize: 10),
+                textAlign: TextAlign.left,
+              ),
             ),
+            // Date Selection Button
             RaisedButton(
                 child: Ink(
                   decoration: const BoxDecoration(
@@ -87,16 +110,19 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
                     ),
                   ),
                 ),
+                // Date Button On Press
                 onPressed: () async {
-                  showDatePicker(
+                  inputDate = (await showDatePicker(
                       context: context,
                       initialDate: date,
                       firstDate: date,
-                      lastDate: DateTime(date.year + 1, date.month, date.day));
+                      lastDate:
+                          DateTime(date.year + 1, date.month, date.day)))!;
                 }),
             const SizedBox(
               height: 10,
             ),
+            // Time Selection Button
             RaisedButton(
                 child: Ink(
                   decoration: const BoxDecoration(
@@ -123,20 +149,51 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
                     ),
                   ),
                 ),
+                // Time Button On Press
                 onPressed: () async {
-                  showTimePicker(
+                  inputTime = (await showTimePicker(
                     context: context,
                     initialTime: time,
-                  );
+                  ))!;
                 }),
             const SizedBox(
               height: 60,
             ),
-            Container(
+            SizedBox(
               height: 40,
               width: 180,
+              // Create Meeting Button
               child: RaisedButton(
-                onPressed: () {
+                onPressed: () async {
+                  HapticFeedback.heavyImpact();
+                  // Add Meeting to Meetings Collection
+                  var newMeeting = await db.collection("meetings").add(<String,
+                      dynamic>{
+                    "date": inputDate
+                        .toString()
+                        .substring(0, inputDate.toString().indexOf(" ")),
+                    "members": membersController.text,
+                    "time": inputTime.toString().substring(
+                        inputTime.toString().indexOf("(") + 1,
+                        inputTime.toString().indexOf(")")),
+                    "title": titleController.text
+                  }).then(
+                      // Add Meeting to user Meetings Collection under same FireBase generated ID
+                      (DocumentReference doc) => db
+                              .collection("users")
+                              .doc(userRef.id)
+                              .collection("meetings")
+                              .doc(doc.id)
+                              .set(<String, dynamic>{
+                            "date": inputDate.toString().substring(
+                                0, inputDate.toString().indexOf(" ")),
+                            "members": membersController.text,
+                            "time": inputTime.toString().substring(
+                                inputTime.toString().indexOf("(") + 1,
+                                inputTime.toString().indexOf(")")),
+                            "title": titleController.text
+                          }));
+
                   Navigator.push(
                       context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
@@ -189,7 +246,7 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
           },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-          padding: const EdgeInsets.all(0.0),
+          padding: const EdgeInsets.all(10.0),
           child: Ink(
             decoration: const BoxDecoration(
               gradient: LinearGradient(

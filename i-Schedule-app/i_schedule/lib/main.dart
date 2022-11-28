@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:i_schedule/screens/HomePage.dart';
+import 'package:i_schedule/screens/RegisterPage.dart';
 import 'screens/LoginPage.dart';
 
 void main() async {
@@ -10,10 +14,27 @@ void main() async {
     messagingSenderId: "iSchedule",
     projectId: "ischedule-6976f",
   ));
-  runApp(iScheduleApp());
+  final FirebaseAuth _fireauth = FirebaseAuth.instance;
+  _fireauth.authStateChanges().listen((User? user) {
+    if (user == null) {
+      runApp(iScheduleAppNewUser());
+    } else {
+      runApp(iScheduleAppNewUser());
+    }
+  });
 }
 
-class iScheduleApp extends StatelessWidget {
+class iScheduleAppExistingUser extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}
+
+class iScheduleAppNewUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

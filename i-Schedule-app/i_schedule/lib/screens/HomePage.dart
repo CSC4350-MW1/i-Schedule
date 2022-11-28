@@ -1,6 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:i_schedule/services/fireserv.dart';
 
 import 'JoinMeetingPage.dart';
 import 'MakeMeetingPage.dart';
@@ -12,7 +15,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  final FirebaseAuth _fireauth = FirebaseAuth.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
   Widget build(BuildContext context) {
+    print(getUserMeetingsTitles(
+        db.collection("users").doc(_fireauth.currentUser!.email)));
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 222, 222, 228),
       appBar: AppBar(
@@ -48,15 +55,14 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(10),
         width: 250,
         alignment: Alignment.topLeft,
-        // Should grab user's meetings from Firebase, currently just placeholder
         child: ListView.builder(
-          padding: const EdgeInsets.all(10),
-          itemCount: 5,
+          padding: const EdgeInsets.only(bottom: 20),
+          itemCount: 2,
           itemBuilder: (BuildContext context, int index) {
             return RaisedButton(
                 onPressed: () {},
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
+                    borderRadius: BorderRadius.circular(20.0)),
                 color: const Color.fromARGB(255, 202, 202, 211),
                 child: Text(
                   ('Placeholder Meeting ') + (index + 1).toString(),
@@ -68,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      // Floating add button (Bottom left, used to join/make a meeting)
+      // Floating add button (Bottom right, used to join/make a meeting)
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 25, 97, 156),
         onPressed: () {
@@ -103,14 +109,17 @@ class _HomePageState extends State<HomePage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               color: const Color.fromARGB(255, 202, 202, 211),
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               onPressed: (() {}),
               child: const Text('Placeholder Meeting Invite')),
+          const SizedBox(
+            height: 5,
+          ),
           RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               color: const Color.fromARGB(255, 202, 202, 211),
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               onPressed: (() {}),
               child: const Text('Placeholder Organization Invite'))
         ],
@@ -151,6 +160,9 @@ Widget _buildNewMeetingPopupDialog(BuildContext context) {
                   MaterialPageRoute(builder: (_) => JoinMeetingPage()));
             }),
             child: const Text('Join an existing meeting')),
+        const SizedBox(
+          height: 10,
+        ),
         RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0)),
@@ -180,3 +192,21 @@ Widget _buildNewMeetingPopupDialog(BuildContext context) {
     ],
   );
 }
+
+// generateMeetingsButtons(DocumentReference user) async {
+//   var userTitles = getUserMeetingsTitles(getUserRef());
+//   (BuildContext context, int index) {
+//     return RaisedButton(
+//         onPressed: () {},
+//         shape:
+//             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+//         color: const Color.fromARGB(255, 202, 202, 211),
+//         child: Text(
+//           (userTitles.),
+//           style: const TextStyle(
+//               fontWeight: FontWeight.bold,
+//               color: Color.fromARGB(255, 15, 75, 124),
+//               fontSize: 13),
+//         ));
+//   };
+// }
