@@ -176,7 +176,7 @@ class _MakeMeetingState extends State<MakeMeetingPage> {
                     "time": inputTime.toString().substring(
                         inputTime.toString().indexOf("(") + 1,
                         inputTime.toString().indexOf(")")),
-                    "title": titleController.text
+                    "title": titleController.text,
                   }).then(
                       // Add Meeting to user Meetings Collection under same FireBase generated ID
                       (DocumentReference doc) => db

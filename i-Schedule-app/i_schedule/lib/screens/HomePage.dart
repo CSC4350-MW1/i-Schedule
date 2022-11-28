@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:i_schedule/services/fireserv.dart';
 
+import '../services/notifications.dart';
 import 'JoinMeetingPage.dart';
 import 'MakeMeetingPage.dart';
 
@@ -14,7 +15,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  sendNotific(String titleIn, String bodyIn, String payloadIn) async {
+    await notificationService.showScheduledLocalNotification(
+        id: 0,
+        title: titleIn,
+        body: "Your Meeting at: " + bodyIn + " is happening soon",
+        payload: payloadIn,
+        seconds: 3);
+  }
+
+  late final NotificationService notificationService;
   @override
+  void initState() {
+    notificationService = NotificationService();
+    listenToNotificationStream();
+    notificationService.initializePlatformNotifications();
+    super.initState();
+  }
+
+  void listenToNotificationStream() =>
+      notificationService.behaviorSubject.listen((payload) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      });
   final FirebaseAuth _fireauth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
   Widget build(BuildContext context) {
@@ -73,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) =>
-                              _buildMeetingPopupDialog(context, document),
+                              _buildMeetingListView(context, document),
                         );
                       },
                       child: Text(
@@ -158,8 +181,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMeetingPopupDialog(
+  Widget _buildMeetingListView(
       BuildContext context, QueryDocumentSnapshot<Object?> document) {
+    DateTime dateNow = DateTime.now();
+    TimeOfDay timeNow = TimeOfDay.now();
+    if (document["time"] ==
+            timeNow.toString().substring(timeNow.toString().indexOf("(") + 1,
+                timeNow.toString().indexOf(")")) &&
+        dateNow.toString().substring(0, dateNow.toString().indexOf(" ")) ==
+            document["date"]) {
+      sendNotific(document["title"], document["time"], document["date"]);
+    } else {
+      sendNotific(document["title"], document["time"], document["date"]);
+    }
     return AlertDialog(
       backgroundColor: const Color.fromARGB(255, 222, 222, 228),
       title: Text(
@@ -261,7 +295,6 @@ Widget _buildNewMeetingPopupDialog(BuildContext context) {
     ],
   );
 }
-
 // generateMeetingsButtons(DocumentReference user) async {
 //   var userTitles = getUserMeetingsTitles(getUserRef());
 //   (BuildContext context, int index) {

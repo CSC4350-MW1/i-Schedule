@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:i_schedule/screens/HomePage.dart';
 import 'package:i_schedule/screens/RegisterPage.dart';
 import 'screens/LoginPage.dart';
+import 'services/notifications.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  //await NotificationService().iOSinit();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
     apiKey: "AIzaSyDhz4nBw4Tn0hQy3V21ct_4uL3vRb4XiB4",
