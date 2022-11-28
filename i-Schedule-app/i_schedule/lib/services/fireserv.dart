@@ -7,10 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 final FirebaseAuth _fireauth = FirebaseAuth.instance;
 final FirebaseFirestore db = FirebaseFirestore.instance;
-
-getUserRef() async {
-  return await db.collection("users").doc(_fireauth.currentUser!.email);
-}
+var servUserMeetingTitles = List.empty(growable: true);
 
 // Returns List of all meetings user is in
 getUserMeetings(DocumentReference user) async {
@@ -32,9 +29,9 @@ getUserMeetingsTitles(DocumentReference user) async {
   meetingData.forEach(
     (element) {
       meetingTitles.add(element["title"]);
+      //print(element["title"]);
     },
   );
-  print(meetingTitles);
   return meetingTitles;
 }
 
@@ -52,6 +49,5 @@ getMeetingsTimes(DocumentReference user) async {
       meetingTimes.add(element["time"]);
     },
   );
-  print(meetingTimes);
   return meetingTimes;
 }

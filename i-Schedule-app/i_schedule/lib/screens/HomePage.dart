@@ -18,8 +18,6 @@ class _HomePageState extends State<HomePage> {
   final FirebaseAuth _fireauth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
   Widget build(BuildContext context) {
-    print(getUserMeetingsTitles(
-        db.collection("users").doc(_fireauth.currentUser!.email)));
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 222, 222, 228),
       appBar: AppBar(
@@ -39,10 +37,10 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.notifications),
               tooltip: 'Notifications',
               color: const Color.fromARGB(255, 202, 202, 211),
-              onPressed: () {
-                showDialog(
+              onPressed: () async {
+                await showDialog(
                   context: context,
-                  builder: (BuildContext context) =>
+                  builder: await (BuildContext context) =>
                       _buildNotificationsPopupDialog(context),
                 );
               },
@@ -50,30 +48,47 @@ class _HomePageState extends State<HomePage> {
           ])
         ],
       ),
-      // Scrollable block of meetings involving user (body of home)
-      body: Container(
-        padding: const EdgeInsets.all(10),
-        width: 250,
-        alignment: Alignment.topLeft,
-        child: ListView.builder(
-          padding: const EdgeInsets.only(bottom: 20),
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) {
-            return RaisedButton(
-                onPressed: () {},
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
-                color: const Color.fromARGB(255, 202, 202, 211),
-                child: Text(
-                  ('Placeholder Meeting ') + (index + 1).toString(),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 15, 75, 124),
-                      fontSize: 13),
-                ));
-          },
-        ),
-      ),
+      // Scrollable block of user's meetings
+      body: StreamBuilder(
+          stream: db
+              .collection("users")
+              .doc(_fireauth.currentUser!.email)
+              .collection("meetings")
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ListView(
+              children: snapshot.data!.docs.map((document) {
+                return Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    height: MediaQuery.of(context).size.width / 8,
+                    child: RaisedButton(
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              _buildMeetingPopupDialog(context, document),
+                        );
+                      },
+                      child: Text(
+                        document["title"],
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 41, 132, 206),
+                            fontSize: 20),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            );
+          }),
       // Floating add button (Bottom right, used to join/make a meeting)
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 25, 97, 156),
@@ -122,6 +137,60 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(20),
               onPressed: (() {}),
               child: const Text('Placeholder Organization Invite'))
+        ],
+      ),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text(
+            'Close',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 25, 97, 156),
+              fontSize: 12,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMeetingPopupDialog(
+      BuildContext context, QueryDocumentSnapshot<Object?> document) {
+    return AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 222, 222, 228),
+      title: Text(
+        document["title"],
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Color.fromARGB(255, 25, 97, 156),
+          fontSize: 16,
+        ),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              color: const Color.fromARGB(255, 202, 202, 211),
+              padding: const EdgeInsets.all(20),
+              onPressed: (() {}),
+              child: Text("Meeting takes place at: " + document["time"])),
+          const SizedBox(
+            height: 5,
+          ),
+          RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              color: const Color.fromARGB(255, 202, 202, 211),
+              padding: const EdgeInsets.all(20),
+              onPressed: (() {}),
+              child: Text("Meeting is on the day of: " + document["date"])),
         ],
       ),
       actions: <Widget>[

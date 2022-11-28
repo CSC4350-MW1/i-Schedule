@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -87,13 +89,14 @@ class _LoginPageState extends State<LoginPage> {
               height: 40,
               width: 180,
               child: RaisedButton(
+                // Login Button OnPressed
                 onPressed: () async {
                   // if (_formKeyEmail.currentState!.validate() &&
                   //     _formKeyPassword.currentState!.validate()) {}
-                  signIn();
+                  await signIn();
                   // emailController.dispose();
                   // passwordController.dispose();
-                  Navigator.push(
+                  await Navigator.push(
                       context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
                 shape: RoundedRectangleBorder(
